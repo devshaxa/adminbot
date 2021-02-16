@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendInvoice;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.payments.LabeledPrice;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.softex.adminbot.bot.JobsVNavoiBot;
@@ -355,13 +354,13 @@ public class HomeController {
     }
 
     @PostMapping("advertisement/delete/{id}")
-    public String deleteAdvertisement(@PathVariable("id")Long id){
+    public String deleteAdvertisement(@PathVariable("id") Long id){
         advertisementService.deleteById(id);
         return "redirect:/";
     }
 
     @PostMapping("employee/delete/{id}")
-    public String deleteEmployee(@PathVariable("id")Long id){
+    public String deleteEmployee(@PathVariable("id") Long id){
         employeeService.deleteById(id);
         return "redirect:/";
     }
@@ -376,6 +375,11 @@ public class HomeController {
     public String deleteResume(@PathVariable("id")Long id){
         resumeService.deleteById(id);
         return "redirect:/";
+    }
+
+    @GetMapping("table")
+    public String table(){
+        return "tables";
     }
 
 }

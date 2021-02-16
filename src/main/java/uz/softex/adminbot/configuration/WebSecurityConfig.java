@@ -1,5 +1,6 @@
 package uz.softex.adminbot.configuration;
 
+import com.github.mkopylec.recaptcha.security.login.FormLoginConfigurerEnhancer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +13,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private FormLoginConfigurerEnhancer formLoginConfigurerEnhancer;
+
+    public WebSecurityConfig(FormLoginConfigurerEnhancer formLoginConfigurerEnhancer) {
+        this.formLoginConfigurerEnhancer = formLoginConfigurerEnhancer;
+    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
