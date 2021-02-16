@@ -39,8 +39,8 @@ public class PaymentService {
         return paymentRepository.findByResume_Id(id);
     }
 
-    public List<Payment> getAllByDone(){
-        return paymentRepository.findByPayDateNotNull();
+    public List<Payment> getAllByDone(String date){
+        return paymentRepository.findByDate(date);
     }
 
 }

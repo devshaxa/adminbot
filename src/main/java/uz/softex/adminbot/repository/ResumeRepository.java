@@ -1,6 +1,8 @@
 package uz.softex.adminbot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.softex.adminbot.model.Resume;
 
@@ -11,5 +13,7 @@ public interface ResumeRepository extends JpaRepository<Resume, Long> {
 
     Resume findBySessionId(Long id);
     List<Resume> getByUserIsNotNull();
-    List<Resume> getByStatus(String status);
+
+    @Query("select r from Resume r where r.status=:status order by r.id")
+    List<Resume> getByStatus(@Param("status") String status);
 }

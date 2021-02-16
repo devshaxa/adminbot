@@ -7,14 +7,12 @@
 </head>
 
 <body class="">
+<div class="se-pre-con"></div>
 <div class="wrapper ">
     <div th:replace="sidebar.html::sidebar"></div>
     <div class="main-panel">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
-            <div class="navbar-wrapper">
-                <a class="navbar-brand" href="javascript:;">Yangi Reklamalar</a>
-            </div>
             <div th:replace="sidebar.html::navbar"></div>
         </nav>
         <!-- End Navbar -->
@@ -221,6 +219,9 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script th:src="@{~/assets/demo/demo.js}"></script>
 <script>
+    $(window).on('load',function(){
+        $(".se-pre-con").fadeOut("slow");;
+    });
     $(document).ready(function () {
         $().ready(function () {
             $sidebar = $('.sidebar');

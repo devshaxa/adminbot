@@ -11,6 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import uz.softex.adminbot.bot.JobsVNavoiBot;
 import uz.softex.adminbot.model.*;
 import uz.softex.adminbot.service.*;
+import uz.softex.adminbot.util.CreatePost;
 import uz.softex.adminbot.util.CreateResume;
 
 import java.io.File;
@@ -50,7 +51,7 @@ public class HomeController {
         model.addAttribute("employees",employeeService.getByStatus("PAY"));
         model.addAttribute("advertisements",advertisementService.getByStatus("PAY"));
         model.addAttribute("resumes",resumeService.getByStatus("PAY"));
-        model.addAttribute("payments",paymentService.getAllByDone());
+        model.addAttribute("payments",paymentService.getAllByDone(simpleDateFormat.format(new Date())));
         return "index";
     }
 
@@ -204,7 +205,10 @@ public class HomeController {
         Job editJob = jobService.findById(id);
         editJob.setWorkingHours(job.getWorkingHours());
         editJob.setPlace(job.getPlace());
-        editJob.setPosition(job.getPosition());
+        if(!editJob.getPosition().equals(job.getPosition())){
+            editJob.setPosition(job.getPosition());
+            CreatePost.generateJob(editJob);
+        }
         editJob.setSalary(job.getSalary());
         editJob.setResponsible(job.getResponsible());
         editJob.setDemands(job.getDemands());
