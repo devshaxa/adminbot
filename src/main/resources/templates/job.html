@@ -629,6 +629,11 @@
         $('#a' + $("#id").val() + ' .fields:eq(5)').text(job.contact);
         $('#a' + $("#id").val() + ' .fields:eq(6)').text(job.additional);
         $('#a' + $("#id").val() + ' .fields:eq(7)').text(job.responsible);
+
+        d= new Date();
+        var url = $('#a' + $("#id").val() + ' .card-img-top:eq(0)').attr("src");
+        $('#a' + $("#id").val() + ' .card-img-top:eq(0)').attr("src", url+'?'+d.getTime());
+        alert("Rasm o'zgartirildi!");
         $('#exampleModal').modal('toggle');
     }
 

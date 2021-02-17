@@ -63,7 +63,12 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1284303105:AAEjfvxzbMB3Q4JL-SAHc0yfEnOodW20Hk4";
+        return "1382475529:AAEfafGgpGxd3SGLp8DtS8D6kkKjpmmlUT4";
+    }
+
+    @Override
+    public String getBotUsername() {
+        return "russianlessonBot";
     }
 
     @Override
@@ -1220,10 +1225,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
 
     }
 
-    @Override
-    public String getBotUsername() {
-        return "lightuzBot";
-    }
+
 
     public void setReplyKeyboard(SendMessage sendMessage, Handle handle) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();

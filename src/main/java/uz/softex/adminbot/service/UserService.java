@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import uz.softex.adminbot.model.User;
 import uz.softex.adminbot.repository.UserRepository;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -27,5 +29,9 @@ public class UserService {
 
     public User getBySessionId(Long id){
         return userRepository.getBySessionId(id);
+    }
+
+    public List<User> findAll(){
+        return userRepository.findAll();
     }
 }

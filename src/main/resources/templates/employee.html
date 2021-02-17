@@ -188,6 +188,9 @@
                         <label for="employeeAdditional" class="bmd-label-static" readonly="true">Qo'shimcha:</label>
                         <input type="text" class="form-control" id="employeeAdditional">
                     </div>
+                    <div>
+                        <input type="file" name="image" id="employeeImage" accept="image/png, image/jpeg"/>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -603,6 +606,25 @@
             dataType: 'json',
             contentType: 'application/json'
         });
+        var fd = new FormData();
+        var files = $('#employeeImage')[0].files;
+        fd.append('file',files[0]);
+        $.ajax({
+            url: "/employee/edit/pic/" + $("#id").val(),
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            cache: false,
+            success: function(res) {
+                console.log(res);
+            },
+
+            error: function(res) {
+                console.log('ERR: ' + res);
+            }
+        });
         $('#a' + $("#id").val() + ' .fields:eq(0)').text(employee.name);
         $('#a' + $("#id").val() + ' .fields:eq(1)').text(employee.age);
         $('#a' + $("#id").val() + ' .fields:eq(2)').text(employee.experience);
@@ -610,6 +632,12 @@
         $('#a' + $("#id").val() + ' .fields:eq(4)').text(employee.education);
         $('#a' + $("#id").val() + ' .fields:eq(5)').text(employee.phone);
         $('#a' + $("#id").val() + ' .fields:eq(6)').text(employee.additional);
+        if(files.length>0){
+        d= new Date();
+        var url = $('#a' + $("#id").val() + ' .card-img-top:eq(0)').attr("src");
+        $('#a' + $("#id").val() + ' .card-img-top:eq(0)').attr("src", url+'?'+d.getTime());
+        alert("Rasm o'zgartirildi!");}
+        $('#employeeImage').val('');
         $('#exampleModal').modal('toggle');
     }
 
