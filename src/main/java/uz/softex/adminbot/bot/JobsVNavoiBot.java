@@ -88,19 +88,19 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
             if (update.getMessage().hasContact()) {
                 messageText = update.getMessage().getContact().getPhoneNumber();
             }
-            if(update.getMessage().hasSuccessfulPayment()){
+            if (update.getMessage().hasSuccessfulPayment()) {
                 SuccessfulPayment successfulPayment = update.getMessage().getSuccessfulPayment();
-                String [] data = successfulPayment.getInvoicePayload().split(" ");
-                if(data[0].equals("ADVERTISEMENT")){
+                String[] data = successfulPayment.getInvoicePayload().split(" ");
+                if (data[0].equals("ADVERTISEMENT")) {
                     Advertisement advertisement = advertisementService.get(Long.parseLong(data[1]));
                     advertisement.setStatus("DONE");
                     advertisementService.save(advertisement);
                     Payment payment = paymentService.findByAdvertisementId(advertisement.getId());
                     payment.setPayDate(simpleDateFormat.format(new Date()));
                     paymentService.save(payment);
-                    sendMessage(update.getMessage().getChatId(),"To'lov muvaffaqqiyatli amalga oshirildi!");
-                    sendImage(-1001389126998l,advertisement.getText(),advertisement.getPicUrl(),"ADVERTISEMENT");
-                } else if(data[0].equals("RESUME")){
+                    sendMessage(update.getMessage().getChatId(), "To'lov muvaffaqqiyatli amalga oshirildi!");
+                    sendImage(-1001389126998l, advertisement.getText(), advertisement.getPicUrl(), "ADVERTISEMENT");
+                } else if (data[0].equals("RESUME")) {
                     Resume resume = resumeService.get(Long.parseLong(data[1]));
                     resume.setStatus("DONE");
                     resumeService.save(resume);
@@ -111,37 +111,37 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                     sendDocument.setChatId(update.getMessage().getChatId());
                     sendDocument.setDocument(CreateResume.printPdf(resume));
                     try {
-                        sendMessage(update.getMessage().getChatId(),"To'lov muvaffaqqiyatli amalga oshirildi!");
+                        sendMessage(update.getMessage().getChatId(), "To'lov muvaffaqqiyatli amalga oshirildi!");
                         execute(sendDocument);
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
-                } else if(data[0].equals("JOB")){
+                } else if (data[0].equals("JOB")) {
                     Job job = jobService.get(Long.parseLong(data[1]));
                     job.setStatus("DONE");
                     jobService.save(job);
                     Payment payment = paymentService.findByJobId(job.getId());
                     payment.setPayDate(simpleDateFormat.format(new Date()));
                     paymentService.save(payment);
-                    sendMessage(update.getMessage().getChatId(),"To'lov muvaffaqqiyatli amalga oshirildi!");
-                    sendImage(-1001389126998l,"Xodim kerak\n\n" +
+                    sendMessage(update.getMessage().getChatId(), "To'lov muvaffaqqiyatli amalga oshirildi!");
+                    sendImage(-1001389126998l, "Xodim kerak\n\n" +
                             "\uD83C\uDFE2 *Ish joyi:* " + job.getPlace() + "\n" +
                             "\uD83D\uDD51 *Lavozim:* " + job.getPosition() + "\n" +
                             "\uD83D\uDCDA *Talablar:* " + job.getDemands() + "\n" +
                             "\uD83D\uDCB0 *Maoshi:* " + job.getSalary() + "\n" +
-                            "\uD83D\uDD52 *Ish vaqti:* "+job.getWorkingHours()+"\n"+
+                            "\uD83D\uDD52 *Ish vaqti:* " + job.getWorkingHours() + "\n" +
                             "\uD83D\uDCF1 *Telegram:* [" + update.getMessage().getFrom().getFirstName() + "](tg://user?id=" + update.getMessage().getFrom().getId() + ")\n" +
-                            "\uD83D\uDCDE *Aloqa:* " + job.getContact()+"\n" +
-                            "‼️ *Qo'shimcha ma'lumotlar:* " + job.getAdditional()+"\n" +
-                            "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Mas'ul:* " + job.getResponsible(),job.getPicUrl(),"JOB");
-                } else if(data[0].equals("EMPLOYEE")){
+                            "\uD83D\uDCDE *Aloqa:* " + job.getContact() + "\n" +
+                            "‼️ *Qo'shimcha ma'lumotlar:* " + job.getAdditional() + "\n" +
+                            "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Mas'ul:* " + job.getResponsible(), job.getPicUrl(), "JOB");
+                } else if (data[0].equals("EMPLOYEE")) {
                     Employee employee = employeeService.get(Long.parseLong(data[1]));
                     employee.setStatus("DONE");
                     employeeService.save(employee);
                     Payment payment = paymentService.findByEmployeeId(employee.getId());
                     payment.setPayDate(simpleDateFormat.format(new Date()));
                     paymentService.save(payment);
-                    sendMessage(update.getMessage().getChatId(),"To'lov muvaffaqqiyatli amalga oshirildi!");
+                    sendMessage(update.getMessage().getChatId(), "To'lov muvaffaqqiyatli amalga oshirildi!");
                     Boolean isFemale = employee.getName().matches("(.*)va (.*)");
                     String pic = isFemale ? "\uD83D\uDC69\u200D\uD83D\uDCBC" : "\uD83D\uDC68\u200D\uD83D\uDCBC";
                     sendImage(-1001389126998l, "Ish kerak\n\n" +
@@ -154,7 +154,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                             "\uD83D\uDCF1 *Telegram:* [" + employee.getUser().getFirstname() + "](tg://user?id=" + employee.getUser().getId() + ")\n" +
                             "\uD83D\uDCDE *Telefon:* " + employee.getPhone(), employee.getPicUrl(), "EMPLOYEE");
                 }
-                Payment payment = new Payment(data[0],10000d, simpleDateFormat.format(new Date()), userService.getById(update.getMessage().getFrom().getId().longValue()));
+                Payment payment = new Payment(data[0], 10000d, simpleDateFormat.format(new Date()), userService.getById(update.getMessage().getFrom().getId().longValue()));
                 paymentService.save(payment);
             }
             message = update.getMessage();
@@ -171,7 +171,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
             currentUser = update.getCallbackQuery().getFrom();
         }
 
-        if(update.hasPreCheckoutQuery()){
+        if (update.hasPreCheckoutQuery()) {
             System.out.println(update.getPreCheckoutQuery().getFrom());
             AnswerPreCheckoutQuery answerPreCheckoutQuery = new AnswerPreCheckoutQuery();
             answerPreCheckoutQuery.setPreCheckoutQueryId(update.getPreCheckoutQuery().getId());
@@ -429,7 +429,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                         createEmployee.setStatus("SEND");
                         createEmployee.setDate(simpleDateFormat.format(new Date()));
                         createEmployee = employeeService.save(createEmployee);
-                        notificationService.notify(new Notification("hodim",createEmployee),"UserA");
+                        notificationService.notify(new Notification("hodim", createEmployee), "UserA");
                         sendMessage(chatId, handle.getLang().equals("uz") ? "Ma'lumotlar muvaffaqiyatli joylashtirildi.\nSo'rovingiz admin tomonidan ko'rib chiqilib xabar yuboriladi." : "Данные были успешно размещены");
                     } else {
                         Handle handle = session.getHandle();
@@ -571,7 +571,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
 
                         createJob = jobService.save(createJob);
                         notificationService.notify(new Notification(
-                               "ish",createJob),"UserA");
+                                "ish", createJob), "UserA");
                         sendMessage(chatId, handle.getLang().equals("uz") ? "Ma'lumotlar muvaffaqiyatli joylashtirildi.\nSo'rovingiz admin tomonidan ko'rib chiqilib xabar yuboriladi" : "Данные были успешно размещены");
                     } else {
                         Handle handle = session.getHandle();
@@ -644,7 +644,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                         createAdvertisement.setStatus("SEND");
 
                         createAdvertisement = advertisementService.save(createAdvertisement);
-                        notificationService.notify(new Notification("reklama",createAdvertisement),"UserA");
+                        notificationService.notify(new Notification("reklama", createAdvertisement), "UserA");
                         sendMessage(chatId, handle.getLang().equals("uz") ? "Ma'lumotlar muvaffaqiyatli joylashtirildi" : "Данные были успешно размещены");
                     } else {
                         Handle handle = session.getHandle();
@@ -818,7 +818,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                         createResume.setDate(simpleDateFormat.format(new Date()));
                         createResume.setStatus("SEND");
                         createResume = resumeService.save(createResume);
-                        notificationService.notify(new Notification("rezyumi",createResume),"UserA");
+                        notificationService.notify(new Notification("rezyumi", createResume), "UserA");
                         sendMessage(chatId, handle.getLang().equals("uz") ? "Ma'lumotlar muvaffaqiyatli joylashtirildi" : "Данные были успешно размещены");
 
                     } else {
@@ -936,7 +936,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                             "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Ma'lumoti:* " + session.getEmployee().getEducation() + "\n" +
                             "‼️ *Qo'shimcha ma'lumotlar:* " + session.getEmployee().getAdditional() + "\n" +
                             "\uD83D\uDCF1 *Telegram:* [" + session.getUser().getFirstname() + "](tg://user?id=" + session.getUser().getId() + ")\n" +
-                            "\uD83D\uDCDE *Telefon:* " + session.getEmployee().getPhone(), session.getEmployee().getPicUrl());
+                            "\uD83D\uDCDE *Telefon:* " + session.getEmployee().getPhone(), session.getEmployee().getPicUrl(),session.getHandle());
                     Handle handle = session.getHandle();
                     handle.setStep(handle.getStep() + 1);
                     session.setHandle(handle);
@@ -1017,18 +1017,18 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                     sessionService.update(session);
                 }
                 break;
-                case 10:{
+                case 10: {
                     CreatePost.generateJob(session.getJob());
                     sendImage(chatId, "Xodim kerak\n\n" +
                             "\uD83C\uDFE2 *Ish joyi:* " + session.getJob().getPlace() + "\n" +
                             "\uD83D\uDD51 *Lavozim:* " + session.getJob().getPosition() + "\n" +
                             "\uD83D\uDCDA *Talablar:* " + session.getJob().getDemands() + "\n" +
                             "\uD83D\uDCB0 *Maoshi:* " + session.getJob().getSalary() + "\n" +
-                            "\uD83D\uDD52 *Ish vaqti:* "+session.getJob().getWorkingHours()+"\n"+
+                            "\uD83D\uDD52 *Ish vaqti:* " + session.getJob().getWorkingHours() + "\n" +
                             "\uD83D\uDCF1 *Telegram:* [" + session.getUser().getFirstname() + "](tg://user?id=" + session.getUser().getId() + ")\n" +
-                            "\uD83D\uDCDE *Aloqa:* " + session.getJob().getContact()+"\n" +
-                            "‼️ *Qo'shimcha ma'lumotlar:* " + session.getJob().getAdditional()+"\n" +
-                            "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Mas'ul:* " + session.getJob().getResponsible(), session.getJob().getPicUrl());
+                            "\uD83D\uDCDE *Aloqa:* " + session.getJob().getContact() + "\n" +
+                            "‼️ *Qo'shimcha ma'lumotlar:* " + session.getJob().getAdditional() + "\n" +
+                            "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Mas'ul:* " + session.getJob().getResponsible(), session.getJob().getPicUrl(),session.getHandle());
                     Handle handle = session.getHandle();
                     handle.setStep(handle.getStep() + 1);
                     session.setHandle(handle);
@@ -1053,10 +1053,10 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                     sessionService.update(session);
                 }
                 break;
-                case 3:{
-                    sendImage(chatId,session.getAdvertisement().getText(),session.getAdvertisement().getPicUrl());
+                case 3: {
+                    sendImage(chatId, session.getAdvertisement().getText(), session.getAdvertisement().getPicUrl(),session.getHandle());
                     Handle handle = session.getHandle();
-                    handle.setStep(handle.getStep()+1);
+                    handle.setStep(handle.getStep() + 1);
                     session.setHandle(handle);
                     sessionService.update(session);
                 }
@@ -1184,21 +1184,21 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
                     sessionService.update(session);
                 }
                 break;
-                case 16:{
+                case 16: {
                     Boolean isFemale = session.getResume().getLastname().matches("(.*)va (.*)");
                     String pic = isFemale ? "\uD83D\uDC69\u200D\uD83D\uDCBC" : "\uD83D\uDC68\u200D\uD83D\uDCBC";
                     sendImage(chatId, "Ma'lumotlar\n\n" +
-                            pic + "*Ism sharifi:* " + session.getResume().getFirstname()+" "+session.getResume().getLastname() +" "+session.getResume().getFathersName()+ "\n" +
+                            pic + "*Ism sharifi:* " + session.getResume().getFirstname() + " " + session.getResume().getLastname() + " " + session.getResume().getFathersName() + "\n" +
                             "\uD83D\uDD51 *Tug'ilgan sanasi:* " + session.getResume().getDateOfBirth() + "\n" +
                             "\uD83D\uDCDA *Manzil:* " + session.getResume().getAddress() + "\n" +
                             "\uD83D\uDCB0 *Telefon:* " + session.getResume().getPhone() + "\n" +
                             "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83D\uDCBB *Ma'lumoti:* " + session.getResume().getEducation() + "\n" +
                             "‼️ *Qaysi xorijiy tillarni biladi:* " + session.getResume().getLanguage() + "\n" +
                             "\uD83D\uDCF1 *Oilaviy holati:* " + session.getResume().getMaritalStatus() + "\n" +
-                            "\uD83D\uDCDE *Kasbiy faoliyati:* " + session.getResume().getJobExperience()+"\n" +
-                            "*Maqsadi:* "+session.getResume().getPurpose()+"\n" +
-                            "*Shaxsiy xususiyatlari:* "+session.getResume().getPersonalProperty()+"\n" +
-                            "*Qo'shimcha bilimlari:* "+session.getResume().getAdditionalKnowledge(), session.getResume().getPicUrl());
+                            "\uD83D\uDCDE *Kasbiy faoliyati:* " + session.getResume().getJobExperience() + "\n" +
+                            "*Maqsadi:* " + session.getResume().getPurpose() + "\n" +
+                            "*Shaxsiy xususiyatlari:* " + session.getResume().getPersonalProperty() + "\n" +
+                            "*Qo'shimcha bilimlari:* " + session.getResume().getAdditionalKnowledge(), session.getResume().getPicUrl(),session.getHandle());
                     Handle handle = session.getHandle();
                     handle.setStep(handle.getStep() + 1);
                     session.setHandle(handle);
@@ -1224,7 +1224,6 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
-
 
 
     public void setReplyKeyboard(SendMessage sendMessage, Handle handle) {
@@ -1618,7 +1617,7 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
 
     }
 
-    public void sendImage(Long chatId, String text, String imgUrl) {
+    public void sendImage(Long chatId, String text, String imgUrl, Handle handle) {
         File file = new File("pic/" + imgUrl);
         String path = "";
         try {
@@ -1635,8 +1634,13 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
-        row1.add(new InlineKeyboardButton().setCallbackData("accept").setText("✅ Tasdiqlash"));
-        row2.add(new InlineKeyboardButton().setCallbackData("\uD83D\uDEAB Bekor qilish").setText("\uD83D\uDEAB Bekor qilish"));
+        if (handle.getLang().equals("uz")) {
+            row1.add(new InlineKeyboardButton().setCallbackData("accept").setText("✅ Tasdiqlash"));
+            row2.add(new InlineKeyboardButton().setCallbackData("\uD83D\uDEAB Bekor qilish").setText("\uD83D\uDEAB Bekor qilish"));
+        } else {
+            row1.add(new InlineKeyboardButton().setCallbackData("accept").setText("✅ Подтверждать"));
+            row2.add(new InlineKeyboardButton().setCallbackData("\uD83D\uDEAB Bekor qilish").setText("\uD83D\uDEAB Отмена"));
+        }
         keyboard.add(row1);
         keyboard.add(row2);
         inlineKeyboardMarkup.setKeyboard(keyboard);
@@ -1647,7 +1651,8 @@ public class JobsVNavoiBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-    public void sendImage(Long chatId, String text, String imgUrl, String type){
+
+    public void sendImage(Long chatId, String text, String imgUrl, String type) {
         File file = new File("pic/" + imgUrl);
         String path = "";
         try {

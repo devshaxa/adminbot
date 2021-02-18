@@ -415,11 +415,16 @@ public class HomeController {
         if (message.getImgUrl() == null) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText(message.getText());
+            sendMessage.enableMarkdown(true);
+            sendMessage.disableWebPagePreview();
             userService.findAll().forEach(user -> {
                 sendMessage.setChatId(user.getId());
                 try {
                     jobsVNavoiBot.execute(sendMessage);
+                    Thread.sleep(1000);
                 } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             });
@@ -427,11 +432,16 @@ public class HomeController {
             SendPhoto sendPhoto = new SendPhoto();
             sendPhoto.setPhoto(new File("pic/"+message.getImgUrl()));
             sendPhoto.setCaption(message.getText());
+            sendPhoto.setParseMode("Markdown");
             userService.findAll().forEach(user -> {
-                sendPhoto.setChatId(user.getId());
                 try {
+                    System.out.println(user.getFirstname());
+                    sendPhoto.setChatId(user.getId());
                     jobsVNavoiBot.execute(sendPhoto);
+                    Thread.sleep(1000);
                 } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             });
